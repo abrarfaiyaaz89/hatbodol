@@ -61,7 +61,19 @@
 
         <div id="account" hidden>
           <p><strong id="acc-name"></strong><br><span id="acc-email"></span></p>
-          <button class="btn" id="btn-logout" type="button">Log out</button>
+          <h2 class="sub">Student verification</h2>
+          <p id="ver-status"></p>
+          <form id="form-verify" hidden novalidate>
+            <div class="field"><label for="ver-id">Student ID</label>
+              <input id="ver-id" type="text" inputmode="numeric" autocomplete="off" required></div>
+            <div class="field"><label for="ver-dept">Department</label>
+              <input id="ver-dept" type="text" autocomplete="off" required></div>
+            <div class="field"><label for="ver-mail">University email (optional)</label>
+              <input id="ver-mail" type="email" autocomplete="off"></div>
+            <p class="note">Your student ID is visible only to you and the site administrator.</p>
+            <button class="btn" type="submit">Submit for review</button>
+          </form>
+          <p><button class="btn" id="btn-logout" type="button">Log out</button></p>
         </div>
       </div>
     </div>

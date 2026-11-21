@@ -1,28 +1,17 @@
-# Project Status
+# Project Status (2026-11-21)
 
-**Current phase:** 1 - Frontend foundation, step 1 done (updated 2026-11-20)
+Live: https://abrarfaiyaaz89.github.io/hatbodol/  (GitHub Pages, flat files in repo root)
+Firebase project: hatbodol-1 (Spark plan). Login: Google (tested working).
 
 ## Done
-- Phase 1 step 1: tokens.css, base.css, layout.css, layout.js (header, search, mobile bottom nav with Post, footer), index.html shell, logo.jpg in assets/img
-- Folder structure, .gitignore, Firebase config files (deny-all rules)
-- CLAUDE.md, DATABASE_SCHEMA.md, DEVELOPMENT_ROADMAP.md, CHANGELOG.md
+Layout shell, homepage, login page with Google, profile record, student verification form, admin approval page (admin.html).
 
-## Not verified
-- Nothing has been run, tested or deployed. Firebase project not created yet.
+## Not yet verified
+Firestore rules, profile creation, verification submit, admin approval. Test checklist is in the chat; update this file after testing.
 
-## Blocking / needed from owner
-- Transparent logo (PNG or SVG) and wordmark font name
-- Colour decision: logo charcoal vs pure black
-- Approve or reject the proposed roadmap changes (see DEVELOPMENT_ROADMAP.md)
-- Create Firebase project (Spark plan) and Cloudinary free account
+## Known gaps
+Links to pages that do not exist yet. Search boxes not connected. No Terms/Privacy page yet (needed before real students submit IDs).
+Duplicate student IDs cannot be blocked without server code; admin must check manually.
 
-## Bugs
-- None yet
-
-## Known placeholders
-- Nav/footer links point to pages not built yet (explore, services, vendors, post, messages, profile, help, about).
-- Search form is not connected yet.
-- Colours: charcoal #2f2f2f default; orange only in logo. Font: system stack until owner supplies one.
-
-## Next task
-Phase 1 step 2: homepage content (hero with contour lines, categories, recent listings area, vendor/services sections).
+## Next
+Test Phase 2 step 2, then 404 + Terms/Privacy pages, then Phase 3 (listings).

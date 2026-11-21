@@ -1,8 +1,64 @@
 rules_version = '2';
-// Phase 0: deny everything. Real rules are added phase by phase
-// and must be tested before deploy. Never rely on frontend checks alone.
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function isAdmin() {
+      return signedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    // Admins are added by hand in the Firebase console. Clients can never write here.
+    match /admins/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    match /users/{uid} {
+      allow read: if signedIn() && (request.auth.uid == uid || isAdmin());
+
+      allow create: if signedIn() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['displayName','email','campusId','role','verificationStatus','createdAt'])
+        && request.resource.data.displayName is string
+        && request.resource.data.displayName.size() <= 80
+        && request.resource.data.email is string
+        && request.resource.data.campusId == 'cu'
+        && request.resource.data.role == 'student'
+        && request.resource.data.verificationStatus == 'unverified'
+        && request.resource.data.createdAt == request.time;
+
+      allow update: if signedIn()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['verificationStatus'])
+        && (
+          // student asks for review
+          (request.auth.uid == uid
+            && resource.data.verificationStatus in ['unverified','rejected']
+            && request.resource.data.verificationStatus == 'pending')
+          ||
+          // admin decides
+          (isAdmin() && request.resource.data.verificationStatus in ['verified','rejected'])
+        );
+
+      allow delete: if false;
+    }
+
+    match /studentProfiles/{uid} {
+      allow read: if signedIn() && (request.auth.uid == uid || isAdmin());
+
+      allow create, update: if signedIn() && request.auth.uid == uid
+        && get(/databases/$(database)/documents/users/$(uid)).data.verificationStatus in ['unverified','rejected']
+        && request.resource.data.keys().hasOnly(['studentId','department','universityEmail','submittedAt'])
+        && request.resource.data.studentId is string
+        && request.resource.data.studentId.size() >= 6 && request.resource.data.studentId.size() <= 20
+        && request.resource.data.department is string
+        && request.resource.data.department.size() >= 2 && request.resource.data.department.size() <= 80
+        && request.resource.data.universityEmail is string
+        && request.resource.data.universityEmail.size() <= 120
+        && request.resource.data.submittedAt == request.time;
+
+      allow delete: if false;
+    }
+
+    // Everything else stays closed until its phase is built.
     match /{document=**} {
       allow read, write: if false;
     }

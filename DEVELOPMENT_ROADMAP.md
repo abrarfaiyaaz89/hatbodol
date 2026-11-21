@@ -1,23 +1,17 @@
-# Development Roadmap
+# HATBODOL - Development Roadmap (approved changes applied 2026-11-21)
 
-Status: [ ] todo, [~] in progress, [x] done
+Status: [x] done, [~] in progress, [ ] todo. Free-only: Firebase Spark (Auth, Firestore), Cloudinary free, GitHub Pages. No Cloud Functions or Storage.
 
-- [~] 0 Preparation
-- [ ] 1 Frontend foundation (layout, nav, footer, branding, components, homepage, animation base)
-- [ ] 2 Accounts (register, login, recovery, profiles, student verification, vendors, roles)
-- [ ] 3 Marketplace (listings, Cloudinary images, edit/delete, categories, search, filters, detail)
-- [ ] 4 Communication (messaging, notifications, unread, transaction tracking)
+- [x] 0 Preparation
+- [~] 1 Frontend foundation: layout shell [x], homepage [x]. Still to add: 404 page, Terms/Privacy page, Settings page.
+- [~] 2 Accounts: Google login [x]; profile record + student verification request [x, needs rules published and tested]; basic admin approval page [x, needs testing]; vendor accounts [ ]; "registered but unverified" state [x]; vendors may message [ ].
+- [ ] 3 Marketplace (Cloudinary images, keyword-array search, pagination)
+- [ ] 4 Safety first, then messaging: report + block, THEN messages, notifications, transaction tracking
 - [ ] 5 Services and rentals
-- [ ] 6 Vendors and utilities (vendors, food, printing, Lost & Found)
-- [ ] 7 Administration (dashboard, moderation, reports, blocking, reviews)
-- [ ] 8 Testing (full pass)
-- [ ] 9 Deployment (rules, hosting, hatbodol.web.app)
+- [ ] 6 Vendors and utilities (vendor profile page, food, printing, Lost & Found)
+- [ ] 7 Admin expansion (moderation, reports, reviews)
+- [ ] 8 Final full testing pass
+- [ ] 9 Deployment (move to Firebase Hosting only if a free no-card path exists)
 - [ ] 10 Expansion
 
-## Proposed changes - NOT applied until owner approves
-1. Move basic admin tools (approve students, hide listings) into Phase 2, before verification is needed.
-2. Add report/block before messaging (Phase 4), not in Phase 7.
-3. Test security rules inside every phase, not only Phase 8.
-4. Add pages: Terms/Privacy, Settings, 404, Vendor Profile.
-5. Add "registered, unverified" state; let vendors message.
-6. Free-tier replacements: Cloudinary for images, no Cloud Functions, keyword-array search, manual admin via console.
+Every phase ends with its own security-rules and mobile test checklist before it is marked done.

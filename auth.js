@@ -1,12 +1,11 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
-  getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+  onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword,
   signOut, sendPasswordResetEmail, updateProfile, sendEmailVerification,
   GoogleAuthProvider, signInWithPopup
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { firebaseConfig } from "./firebase-config.js";
+import { doc, getDoc, setDoc, serverTimestamp, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { auth, db } from "./fb.js";
 
-const auth = getAuth(initializeApp(firebaseConfig));
 const $ = (id) => document.getElementById(id);
 const msg = $("msg");
 
@@ -25,6 +24,7 @@ const ERR = {
   "auth/network-request-failed": "Network problem. Check your internet and try again.",
   "auth/invalid-api-key": "Setup problem (API key). Please tell the site owner.",
   "auth/operation-not-allowed": "This sign-in method is not enabled yet. Please tell the site owner.",
+  "permission-denied": "You are not allowed to do that.",
   "auth/popup-closed-by-user": "Sign-in was cancelled.",
   "auth/cancelled-popup-request": "Sign-in was cancelled.",
   "auth/popup-blocked": "Your browser blocked the sign-in window. Allow pop-ups for this site and try again.",
@@ -92,12 +92,65 @@ $("btn-google").addEventListener("click", async (ev) => {
 
 $("btn-logout").addEventListener("click", async () => { await signOut(auth); clearMsg(); });
 
+const STATUS = {
+  unverified: "Not verified yet. Submit your student details to start posting.",
+  pending: "Your request is pending review.",
+  verified: "Verified student.",
+  rejected: "Your last request was not approved. You can submit again."
+};
+function renderVerification(status) {
+  $("ver-status").textContent = STATUS[status] || STATUS.unverified;
+  $("form-verify").hidden = !(status === "unverified" || status === "rejected");
+}
+
+async function loadProfile(user) {
+  const ref = doc(db, "users", user.uid);
+  try {
+    let snap = await getDoc(ref);
+    if (!snap.exists()) {
+      await setDoc(ref, {
+        displayName: (user.displayName || "Student").slice(0, 80),
+        email: user.email || "",
+        campusId: "cu",
+        role: "student",
+        verificationStatus: "unverified",
+        createdAt: serverTimestamp()
+      });
+      snap = await getDoc(ref);
+    }
+    renderVerification(snap.data().verificationStatus);
+  } catch (e) {
+    show("Could not load your profile. Please reload the page.", false);
+  }
+}
+
+$("form-verify").addEventListener("submit", (ev) => {
+  ev.preventDefault();
+  run(ev.target, async () => {
+    const sid = $("ver-id").value.trim();
+    const dept = $("ver-dept").value.trim();
+    const mail = $("ver-mail").value.trim();
+    if (sid.length < 6 || sid.length > 20) { show("Enter your student ID (6 to 20 characters).", false); return; }
+    if (dept.length < 2) { show("Enter your department.", false); return; }
+    const uid = auth.currentUser.uid;
+    const batch = writeBatch(db);
+    batch.set(doc(db, "studentProfiles", uid), {
+      studentId: sid, department: dept, universityEmail: mail, submittedAt: serverTimestamp()
+    });
+    batch.update(doc(db, "users", uid), { verificationStatus: "pending" });
+    await batch.commit();
+    renderVerification("pending");
+    show("Submitted. Your request will be reviewed.", true);
+  });
+});
+
 onAuthStateChanged(auth, (user) => {
   const signedIn = !!user;
   $("auth-forms").hidden = signedIn;
   $("account").hidden = !signedIn;
   if (user) {
     $("acc-name").textContent = user.displayName || "Student";
-    $("acc-email").textContent = user.email + (user.emailVerified ? " (email verified)" : " (email not verified yet)");
+    $("acc-email").textContent = user.email || "";
+    loadProfile(user);
   }
 });
