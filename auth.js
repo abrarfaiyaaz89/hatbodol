@@ -3,7 +3,7 @@ import {
   signOut, sendPasswordResetEmail, updateProfile, sendEmailVerification,
   GoogleAuthProvider, signInWithPopup
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { doc, getDoc, setDoc, serverTimestamp, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { doc, getDoc, setDoc, serverTimestamp, writeBatch, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { auth, db } from "./fb.js";
 
 const $ = (id) => document.getElementById(id);
@@ -103,6 +103,14 @@ function renderVerification(status) {
   $("form-verify").hidden = !(status === "unverified" || status === "rejected");
 }
 
+function adminLink(show, n) {
+  const box = $("admin-link");
+  if (!box) return;
+  box.hidden = !show;
+  const a = box.querySelector("a");
+  if (a && show) a.textContent = "Admin: review requests" + (n ? " (" + n + " pending)" : "");
+}
+
 async function loadProfile(user) {
   const ref = doc(db, "users", user.uid);
   try {
@@ -121,8 +129,14 @@ async function loadProfile(user) {
     renderVerification(snap.data().verificationStatus);
     try {
       const a = await getDoc(doc(db, "admins", user.uid));
-      $("admin-link").hidden = !a.exists();
-    } catch (e) { $("admin-link").hidden = true; }
+      if (a.exists()) {
+        let n = 0;
+        try {
+          n = (await getDocs(query(collection(db, "users"), where("verificationStatus", "==", "pending")))).size;
+        } catch (e) { /* count is optional */ }
+        adminLink(true, n);
+      } else { adminLink(false, 0); }
+    } catch (e) { adminLink(false, 0); }
   } catch (e) {
     show("Could not load your profile. Please reload the page.", false);
   }
@@ -148,9 +162,16 @@ $("form-verify").addEventListener("submit", (ev) => {
   });
 });
 
+let authReady = false;
+function ready() { authReady = true; const l = $("auth-loading"); if (l) l.hidden = true; }
+setTimeout(() => { // if Firebase is slow or blocked, still show the forms
+  if (!authReady) { ready(); $("auth-forms").hidden = false; }
+}, 8000);
+
 onAuthStateChanged(auth, (user) => {
   const signedIn = !!user;
-  if (!signedIn) $("admin-link").hidden = true;
+  ready();
+  if (!signedIn) adminLink(false, 0);
   $("auth-forms").hidden = signedIn;
   $("account").hidden = !signedIn;
   if (user) {
