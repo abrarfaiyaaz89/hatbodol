@@ -119,6 +119,10 @@ async function loadProfile(user) {
       snap = await getDoc(ref);
     }
     renderVerification(snap.data().verificationStatus);
+    try {
+      const a = await getDoc(doc(db, "admins", user.uid));
+      $("admin-link").hidden = !a.exists();
+    } catch (e) { $("admin-link").hidden = true; }
   } catch (e) {
     show("Could not load your profile. Please reload the page.", false);
   }
@@ -146,6 +150,7 @@ $("form-verify").addEventListener("submit", (ev) => {
 
 onAuthStateChanged(auth, (user) => {
   const signedIn = !!user;
+  if (!signedIn) $("admin-link").hidden = true;
   $("auth-forms").hidden = signedIn;
   $("account").hidden = !signedIn;
   if (user) {
