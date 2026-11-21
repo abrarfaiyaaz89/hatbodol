@@ -1,8 +1,9 @@
 # Project Status
 
-**Current phase:** 0 - Preparation (updated 2026-11-20)
+**Current phase:** 1 - Frontend foundation, step 1 done (updated 2026-11-20)
 
 ## Done
+- Phase 1 step 1: tokens.css, base.css, layout.css, layout.js (header, search, mobile bottom nav with Post, footer), index.html shell, logo.jpg in assets/img
 - Folder structure, .gitignore, Firebase config files (deny-all rules)
 - CLAUDE.md, DATABASE_SCHEMA.md, DEVELOPMENT_ROADMAP.md, CHANGELOG.md
 
@@ -18,5 +19,10 @@
 ## Bugs
 - None yet
 
+## Known placeholders
+- Nav/footer links point to pages not built yet (explore, services, vendors, post, messages, profile, help, about).
+- Search form is not connected yet.
+- Colours: charcoal #2f2f2f default; orange only in logo. Font: system stack until owner supplies one.
+
 ## Next task
-Owner creates the Firebase project; then Phase 1, step 1: shared CSS tokens and layout shell.
+Phase 1 step 2: homepage content (hero with contour lines, categories, recent listings area, vendor/services sections).
