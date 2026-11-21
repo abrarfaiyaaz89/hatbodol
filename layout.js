@@ -29,6 +29,7 @@
         '<input id="site-search" name="q" type="search" placeholder="Search items, services...">' +
         '<button type="submit" aria-label="Search">' + svg('search', 20) + '</button>' +
       '</form>' +
+      '<a class="btn-login" href="auth.html"' + cur('profile') + '>Login</a>' +
       '<a class="btn-post" href="post.html">Post</a>' +
     '</div></header>';
 
@@ -38,7 +39,7 @@
       '<a href="explore.html"' + cur('explore') + '>' + svg('explore') + 'Explore</a>' +
       '<a class="post-btn" href="post.html"' + cur('post') + ' aria-label="Post a listing"><span class="circle">' + svg('plus', 26) + '</span>Post</a>' +
       '<a href="messages.html"' + cur('messages') + '>' + svg('msg') + 'Messages</a>' +
-      '<a href="profile.html"' + cur('profile') + '>' + svg('user') + 'Profile</a>' +
+      '<a href="auth.html"' + cur('profile') + '>' + svg('user') + 'Profile</a>' +
     '</nav>';
 
   var footer =

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <title>Login - HATBODOL</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="profile">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div id="site-header"></div>
+  <main id="main">
+    <div class="container">
+      <div class="auth-card">
+        <h1>Your account</h1>
+        <p id="msg" class="msg" role="status" aria-live="polite"></p>
+
+        <div id="auth-forms">
+          <div class="tabs" role="tablist">
+            <button role="tab" data-tab="login" aria-selected="true">Login</button>
+            <button role="tab" data-tab="register" aria-selected="false">Register</button>
+          </div>
+
+          <section id="panel-login">
+            <form id="form-login" novalidate>
+              <div class="field"><label for="login-email">Email</label>
+                <input id="login-email" type="email" autocomplete="email" required></div>
+              <div class="field"><label for="login-password">Password</label>
+                <input id="login-password" type="password" autocomplete="current-password" required></div>
+              <button class="btn" type="submit">Login</button>
+            </form>
+            <p><button class="link" data-goto="reset" type="button">Forgot password?</button></p>
+          </section>
+
+          <section id="panel-register" hidden>
+            <form id="form-register" novalidate>
+              <div class="field"><label for="reg-name">Full name</label>
+                <input id="reg-name" type="text" autocomplete="name" required></div>
+              <div class="field"><label for="reg-email">Email</label>
+                <input id="reg-email" type="email" autocomplete="email" required></div>
+              <div class="field"><label for="reg-password">Password (8+ characters)</label>
+                <input id="reg-password" type="password" autocomplete="new-password" minlength="8" required></div>
+              <div class="field"><label for="reg-password2">Confirm password</label>
+                <input id="reg-password2" type="password" autocomplete="new-password" required></div>
+              <button class="btn" type="submit">Create account</button>
+            </form>
+          </section>
+
+          <section id="panel-reset" hidden>
+            <form id="form-reset" novalidate>
+              <div class="field"><label for="reset-email">Your email</label>
+                <input id="reset-email" type="email" autocomplete="email" required></div>
+              <button class="btn" type="submit">Send reset link</button>
+            </form>
+            <p><button class="link" data-goto="login" type="button">Back to login</button></p>
+          </section>
+        </div>
+
+        <div id="account" hidden>
+          <p><strong id="acc-name"></strong><br><span id="acc-email"></span></p>
+          <button class="btn" id="btn-logout" type="button">Log out</button>
+        </div>
+      </div>
+    </div>
+  </main>
+  <div id="site-footer"></div>
+  <div id="site-bottom-nav"></div>
+  <script src="layout.js"></script>
+  <script type="module" src="auth.js"></script>
+</body>
+</html>
