@@ -7,6 +7,23 @@ service cloud.firestore {
       return signedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
     }
 
+    function validListing(d) {
+      return d.keys().hasOnly(['type','title','description','category','condition','price','images','titleKeywords','ownerId','ownerName','campusId','status','createdAt'])
+        && d.type in ['sell','exchange']
+        && d.title is string && d.title.size() >= 3 && d.title.size() <= 80
+        && d.description is string && d.description.size() <= 1000
+        && d.category in ['Books','Electronics','Furniture','Clothing','Stationery','Sports','Other']
+        && d.condition in ['new','like-new','good','fair']
+        && d.price is number && d.price >= 0 && d.price <= 10000000
+        && d.images is list && d.images.size() <= 3
+        && (d.images.size() < 1 || (d.images[0] is string && d.images[0].matches('https://res\\.cloudinary\\.com/.*')))
+        && (d.images.size() < 2 || (d.images[1] is string && d.images[1].matches('https://res\\.cloudinary\\.com/.*')))
+        && (d.images.size() < 3 || (d.images[2] is string && d.images[2].matches('https://res\\.cloudinary\\.com/.*')))
+        && d.titleKeywords is list && d.titleKeywords.size() <= 10
+        && d.ownerName is string && d.ownerName.size() <= 80
+        && d.campusId == 'cu';
+    }
+
     // Admins are added by hand in the Firebase console. Clients can never write here.
     match /admins/{uid} {
       allow read: if signedIn() && request.auth.uid == uid;
@@ -56,6 +73,31 @@ service cloud.firestore {
         && request.resource.data.submittedAt == request.time;
 
       allow delete: if false;
+    }
+
+    match /listings/{id} {
+      // Public can read active listings; owners and admins can read their own / all.
+      allow read: if resource.data.status == 'active'
+        || (signedIn() && (resource.data.ownerId == request.auth.uid || isAdmin()));
+
+      allow create: if signedIn()
+        && request.resource.data.ownerId == request.auth.uid
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.verificationStatus == 'verified'
+        && validListing(request.resource.data)
+        && request.resource.data.status == 'active'
+        && request.resource.data.createdAt == request.time;
+
+      // Owner may only toggle active/sold (not undo an admin hide). Admin may set any status.
+      allow update: if signedIn()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+        && (
+          (resource.data.ownerId == request.auth.uid
+            && resource.data.status in ['active','sold']
+            && request.resource.data.status in ['active','sold'])
+          || (isAdmin() && request.resource.data.status in ['active','sold','hidden'])
+        );
+
+      allow delete: if signedIn() && (resource.data.ownerId == request.auth.uid || isAdmin());
     }
 
     // Everything else stays closed until its phase is built.

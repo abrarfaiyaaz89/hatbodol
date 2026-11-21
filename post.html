@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <title>Post a listing - HATBODOL</title>
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="post">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div id="site-header"></div>
+  <main id="main">
+    <div class="container">
+      <div class="post-card">
+        <h1>Post a listing</h1>
+        <p id="msg" class="msg" role="status" aria-live="polite"></p>
+        <p id="gate">Loading...</p>
+
+        <form id="form-post" hidden novalidate>
+          <div class="field"><label for="p-type">I want to</label>
+            <select id="p-type"><option value="sell">Sell</option><option value="exchange">Exchange</option></select></div>
+          <div class="field"><label for="p-title">Title</label>
+            <input id="p-title" type="text" maxlength="80" required></div>
+          <div class="field"><label for="p-category">Category</label>
+            <select id="p-category"></select></div>
+          <div class="field"><label for="p-condition">Condition</label>
+            <select id="p-condition">
+              <option value="new">New</option><option value="like-new">Like new</option>
+              <option value="good" selected>Good</option><option value="fair">Fair</option>
+            </select></div>
+          <div class="field" id="price-wrap"><label for="p-price">Price (&#2547;)</label>
+            <input id="p-price" type="number" min="0" max="10000000" step="1" inputmode="numeric"></div>
+          <div class="field"><label for="p-desc">Description</label>
+            <textarea id="p-desc" rows="4" maxlength="1000"></textarea></div>
+          <div class="field"><label for="p-photos">Photos (up to 3)</label>
+            <input id="p-photos" type="file" accept="image/*" multiple>
+            <p class="note" id="photo-note"></p>
+            <div id="preview" class="preview"></div></div>
+          <button class="btn" type="submit">Publish listing</button>
+        </form>
+
+        <h2 class="sub" id="mine-title" hidden>Your listings</h2>
+        <div id="mine"></div>
+      </div>
+    </div>
+  </main>
+  <div id="site-footer"></div>
+  <div id="site-bottom-nav"></div>
+  <script src="layout.js"></script>
+  <script type="module" src="post.js"></script>
+</body>
+</html>

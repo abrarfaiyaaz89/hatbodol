@@ -284,3 +284,31 @@ main { animation: page-in .3s var(--ease) both; }
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }
+
+/* ---------- Listings, explore, post ---------- */
+.field select, .field textarea { width: 100%; padding: 10px var(--space-3); border: 1.5px solid var(--c-gray-600); border-radius: var(--radius-s); background: var(--c-white); color: var(--c-black); }
+.field select { height: 46px; }
+.field input[type="file"] { height: auto; padding: 10px; }
+.post-card { max-width: 560px; margin: var(--space-5) auto 0; }
+.post-card h1 { margin: 0 0 var(--space-3); font-size: 26px; }
+.post-card .btn { border: 0; cursor: pointer; }
+.post-card .btn:disabled { opacity: .6; cursor: wait; }
+.preview { display: flex; gap: var(--space-2); margin-top: var(--space-2); }
+.preview img { width: 72px; height: 72px; object-fit: cover; border-radius: var(--radius-s); border: 1px solid var(--c-gray-300); }
+.lgrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-3); margin-top: var(--space-4); }
+.lcard { border: 1.5px solid var(--c-black); border-radius: var(--radius-m); overflow: hidden; background: var(--c-white); }
+.lthumb { aspect-ratio: 4 / 3; background: var(--c-gray-100); display: grid; place-items: center; color: var(--c-gray-600); font-size: 13px; }
+.lthumb img { width: 100%; height: 100%; object-fit: cover; }
+.lbody { padding: var(--space-3); display: grid; gap: 2px; }
+.ltitle { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lprice { font-weight: 700; }
+.lmeta { font-size: 13px; color: var(--c-gray-600); }
+.chips-row { display: flex; gap: var(--space-2); overflow-x: auto; padding-bottom: var(--space-2); -webkit-overflow-scrolling: touch; }
+.chip { flex: none; padding: 8px 16px; border-radius: var(--radius-pill); border: 1.5px solid var(--c-black); background: transparent; color: var(--c-black); cursor: pointer; font-weight: 600; transition: transform .15s var(--ease), background-color .2s var(--ease), color .2s var(--ease); }
+.chip[aria-pressed="true"] { background: var(--c-black); color: var(--c-white); }
+.chip:active { transform: scale(.96); }
+.center { text-align: center; margin-top: var(--space-5); }
+.mine-item { margin-bottom: var(--space-4); display: grid; gap: var(--space-2); }
+.mine-item .row { display: flex; gap: var(--space-2); }
+.btn-small { padding: 8px 18px; border: 1.5px solid var(--c-black); cursor: pointer; }
+@media (min-width: 768px) { .lgrid { grid-template-columns: repeat(4, 1fr); } }
