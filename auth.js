@@ -1,7 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
   getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-  signOut, sendPasswordResetEmail, updateProfile, sendEmailVerification
+  signOut, sendPasswordResetEmail, updateProfile, sendEmailVerification,
+  GoogleAuthProvider, signInWithPopup
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { firebaseConfig } from "./firebase-config.js";
 
@@ -23,7 +24,12 @@ const ERR = {
   "auth/too-many-requests": "Too many attempts. Please wait a few minutes and try again.",
   "auth/network-request-failed": "Network problem. Check your internet and try again.",
   "auth/invalid-api-key": "Setup problem (API key). Please tell the site owner.",
-  "auth/operation-not-allowed": "Email sign-in is not enabled yet. Please tell the site owner."
+  "auth/operation-not-allowed": "This sign-in method is not enabled yet. Please tell the site owner.",
+  "auth/popup-closed-by-user": "Sign-in was cancelled.",
+  "auth/cancelled-popup-request": "Sign-in was cancelled.",
+  "auth/popup-blocked": "Your browser blocked the sign-in window. Allow pop-ups for this site and try again.",
+  "auth/unauthorized-domain": "This website address is not authorised in Firebase yet. Please tell the site owner.",
+  "auth/account-exists-with-different-credential": "An account with this email already exists with another sign-in method."
 };
 const friendly = (e) => ERR[e && e.code] || "Something went wrong. Please try again.";
 
@@ -74,6 +80,14 @@ $("form-reset").addEventListener("submit", (ev) => {
     await sendPasswordResetEmail(auth, $("reset-email").value.trim());
     show("If an account exists for that email, a reset link has been sent.", true);
   });
+});
+
+$("btn-google").addEventListener("click", async (ev) => {
+  const btn = ev.currentTarget;
+  btn.disabled = true; clearMsg();
+  try { await signInWithPopup(auth, new GoogleAuthProvider()); }
+  catch (e) { show(friendly(e), false); }
+  btn.disabled = false;
 });
 
 $("btn-logout").addEventListener("click", async () => { await signOut(auth); clearMsg(); });

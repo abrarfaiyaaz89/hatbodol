@@ -201,3 +201,7 @@ body[data-page="home"] main { padding-top: 0; }
 .msg.err { background: #fde8e8; color: #7a1010; }
 .msg.ok { background: #e6f4ea; color: #12501f; }
 @media (min-width: 768px) { .btn-login { display: inline-block; } }
+
+.auth-card .btn-google { background: var(--c-white); color: var(--c-black); border: 1.5px solid var(--c-black); }
+.auth-card .btn-google:hover { background: var(--c-gray-100); }
+.or { text-align: center; color: var(--c-gray-600); margin: var(--space-3) 0; font-size: 14px; }
