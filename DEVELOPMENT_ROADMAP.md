@@ -3,7 +3,7 @@
 Status: [x] done, [~] in progress, [ ] todo. Free-only: Firebase Spark (Auth, Firestore), Cloudinary free, GitHub Pages. No Cloud Functions or Storage.
 
 - [x] 0 Preparation
-- [~] 1 Frontend foundation: layout shell [x], homepage [x]. Still to add: 404 page, Terms/Privacy page, Settings page.
+- [~] 1 Frontend foundation: layout shell [x], homepage [x]. 404 [x], Privacy & Terms draft [x]. Still to add: Settings page.
 - [~] 2 Accounts: Google login [x]; profile record + student verification request [x, needs rules published and tested]; basic admin approval page [x, needs testing]; vendor accounts [ ]; "registered but unverified" state [x]; vendors may message [ ].
 - [ ] 3 Marketplace (Cloudinary images, keyword-array search, pagination)
 - [ ] 4 Safety first, then messaging: report + block, THEN messages, notifications, transaction tracking

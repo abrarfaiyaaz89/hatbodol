@@ -29,7 +29,7 @@
         '<input id="site-search" name="q" type="search" placeholder="Search items, services...">' +
         '<button type="submit" aria-label="Search">' + svg('search', 20) + '</button>' +
       '</form>' +
-      '<a class="btn-login" href="auth.html"' + cur('profile') + '>Login</a>' +
+      '<a class="btn-login" href="auth.html"' + cur('profile') + '>Account</a>' +
       '<a class="btn-post" href="post.html">Post</a>' +
     '</div></header>';
 
@@ -47,7 +47,7 @@
       '<div class="cols">' +
         '<div><h2>HATBODOL</h2><p>A student marketplace for the University of Chittagong.</p></div>' +
         '<div><h2>Explore</h2><ul><li><a href="explore.html">Marketplace</a></li><li><a href="services.html">Services</a></li><li><a href="vendors.html">Food &amp; Vendors</a></li></ul></div>' +
-        '<div><h2>Help</h2><ul><li><a href="help.html">Help &amp; Support</a></li><li><a href="about.html">About</a></li></ul></div>' +
+        '<div><h2>Help</h2><ul><li><a href="help.html">Help &amp; Support</a></li><li><a href="about.html">About</a></li><li><a href="privacy.html">Privacy &amp; Terms</a></li></ul></div>' +
       '</div>' +
       '<p class="copy">&copy; ' + new Date().getFullYear() + ' HATBODOL</p>' +
     '</div></footer>';

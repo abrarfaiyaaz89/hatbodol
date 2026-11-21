@@ -55,7 +55,7 @@ button, input { font: inherit; }
   background: var(--c-white); border-bottom: 1px solid var(--c-gray-300);
 }
 .site-header .container { display: flex; align-items: center; gap: var(--space-3); min-height: var(--header-h); }
-.brand img { height: 44px; width: auto; }
+.brand img { height: 46px; width: auto; }
 .nav-desktop { display: none; gap: var(--space-5); margin-left: var(--space-4); }
 .nav-desktop a { padding: var(--space-2) 0; border-bottom: 2px solid transparent; font-weight: 600; }
 .nav-desktop a:hover, .nav-desktop a[aria-current="page"] { border-bottom-color: var(--c-black); }
@@ -213,3 +213,14 @@ body[data-page="home"] main { padding-top: 0; }
 .req .row { display: flex; gap: var(--space-2); margin-top: var(--space-3); }
 .req .btn { border: 1.5px solid var(--c-black); cursor: pointer; padding: 10px 20px; }
 .req .btn:disabled { opacity: .6; }
+
+/* ---------- Text pages ---------- */
+.prose { max-width: 680px; margin: var(--space-5) auto 0; }
+.prose h1 { font-size: 28px; margin: 0 0 var(--space-2); }
+.prose h2 { font-size: 18px; margin: var(--space-5) 0 var(--space-2); }
+.prose p, .prose li { color: var(--c-charcoal); }
+.prose .draft { padding: var(--space-3); background: var(--c-gray-100); border-radius: var(--radius-s); font-size: 14px; }
+.notfound { text-align: center; padding: var(--space-6) 0; }
+.notfound h1 { font-size: 64px; margin: 0; }
+
+.auth-card a.btn { text-align: center; }
