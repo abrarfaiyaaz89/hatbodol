@@ -10,6 +10,7 @@ const $ = (id) => document.getElementById(id);
 const msg = $("msg");
 
 function show(text, ok) {
+  if (text && window.HBFx) { if (ok) window.HBFx.success(); else window.HBFx.error(); }
   msg.textContent = text;
   msg.className = "msg " + (ok ? "ok" : "err");
 }

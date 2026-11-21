@@ -22,6 +22,20 @@
   --max-w: 1100px;
   --ease: cubic-bezier(.2, .7, .2, 1);
 }
+
+/* Fixed colours for panels that stay dark in both themes */
+:root { --c-ink: #0a0a0a; --c-paper: #ffffff; color-scheme: light; }
+
+/* Dark theme: swaps surface and text colours */
+:root[data-theme="dark"] {
+  --c-black: #f2f2f2;
+  --c-charcoal: #cfcfcf;
+  --c-white: #141414;
+  --c-gray-100: #1d1d1d;
+  --c-gray-300: #333333;
+  --c-gray-600: #9a9a9a;
+  color-scheme: dark;
+}
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 body {
@@ -224,3 +238,49 @@ body[data-page="home"] main { padding-top: 0; }
 .notfound h1 { font-size: 64px; margin: 0; }
 
 .auth-card a.btn { text-align: center; }
+
+/* ---------- Dark panels that never invert ---------- */
+.hero, .cta-band, .promo.dark, .site-footer { background: var(--c-ink); color: var(--c-paper); }
+.hero p, .cta-band p, .promo.dark p, .site-footer h2, .site-footer .copy { color: #d9d9d9; }
+.hero .contours { color: var(--c-paper); }
+.chips a { border-color: #666; }
+.chips a:hover { background: var(--c-paper); color: var(--c-ink); }
+.hero-search input { background: var(--c-paper); color: var(--c-ink); }
+.hero-search button { background: #f5f5f5; color: var(--c-ink); border-left-color: #d9d9d9; }
+.hero-search button:hover { background: #d9d9d9; }
+.btn-light { background: var(--c-paper); color: var(--c-ink); }
+.btn-light:hover { background: #d9d9d9; }
+
+/* ---------- Theme button, sound switch, logo in dark mode ---------- */
+.icon-btn {
+  flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; cursor: pointer;
+  border: 1.5px solid var(--c-black); background: transparent; color: var(--c-black);
+}
+.icon-btn .sun { display: none; }
+:root[data-theme="dark"] .icon-btn .moon { display: none; }
+:root[data-theme="dark"] .icon-btn .sun { display: block; }
+.fx-btn {
+  margin-top: var(--space-4); padding: 8px 16px; border-radius: var(--radius-pill); cursor: pointer;
+  background: transparent; color: var(--c-paper); border: 1px solid #666; font-size: 14px;
+}
+:root[data-theme="dark"] .brand img { background: #fff; border-radius: 10px; padding: 3px 6px; }
+
+/* ---------- Feel: no tap box, smooth press, smooth pages ---------- */
+* { -webkit-tap-highlight-color: transparent; }
+a, button, input, label { touch-action: manipulation; }
+html { scroll-behavior: smooth; }
+body { transition: background-color .25s var(--ease), color .25s var(--ease); }
+.site-header { transition: box-shadow .25s var(--ease), background-color .25s var(--ease); }
+.site-header.scrolled { box-shadow: 0 2px 14px rgba(0, 0, 0, .14); }
+.btn, .btn-post, .icon-btn, .chips a, .fx-btn, .tabs button, .bottom-nav a {
+  transition: transform .15s var(--ease), background-color .2s var(--ease), color .2s var(--ease), opacity .2s var(--ease);
+}
+.btn:active, .btn-post:active, .icon-btn:active, .chips a:active, .cat:active, .fx-btn:active, .tabs button:active { transform: scale(.96); }
+.bottom-nav a:active { transform: scale(.92); }
+main { animation: page-in .3s var(--ease) both; }
+@keyframes page-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@view-transition { navigation: auto; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .2s; }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}
