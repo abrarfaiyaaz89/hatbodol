@@ -4,26 +4,44 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#ffffff">
-  <title>Login - HATBODOL</title>
+  <title>Account - HATBODOL</title>
   <script src="theme.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body data-page="profile">
   <a class="skip-link" href="#main">Skip to content</a>
   <div id="site-header"></div>
-  <main id="main">
-    <div class="container">
-      <div class="auth-card">
-        <h1>Your account</h1>
-        <p id="msg" class="msg" role="status" aria-live="polite"></p>
+  <main id="main" class="auth-main">
+    <section class="auth-hero">
+    <svg class="contours draw" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <g><path pathLength="1" d="M-60 90 C 100 20, 240 190, 400 110 S 700 40, 860 120"/><path pathLength="1" d="M-60 130 C 100 60, 240 230, 400 150 S 700 80, 860 160"/><path pathLength="1" d="M-60 170 C 100 100, 240 270, 400 190 S 700 120, 860 200"/></g>
+      <g><path pathLength="1" d="M-60 250 C 100 180, 240 350, 400 270 S 700 200, 860 280"/><path pathLength="1" d="M-60 290 C 100 220, 240 390, 400 310 S 700 240, 860 320"/><path pathLength="1" d="M-60 330 C 100 260, 240 430, 400 350 S 700 280, 860 360"/></g>
+    </svg>
+      <div class="container">
+        <div id="hero-guest" hidden>
+          <h1 class="split"><span style="--i:0">Welcome</span> <span style="--i:1">to</span> <span style="--i:2">HATBODOL</span></h1>
+          <p class="rise-p">Log in to buy, sell and connect with students at the University of Chittagong.</p>
+        </div>
+        <div id="hero-user" hidden>
+          <div class="avatar big" id="acc-avatar" aria-hidden="true"></div>
+          <h1 id="acc-name"></h1>
+          <p id="acc-email"></p>
+          <span class="vbadge" id="ver-badge"></span>
+        </div>
+      </div>
+    </section>
 
+    <div class="container">
+      <div class="auth-sheet">
+        <p id="msg" class="msg" role="status" aria-live="polite"></p>
         <p id="auth-loading">Loading...</p>
+
         <div id="auth-forms" hidden>
-          <button class="btn btn-google" id="btn-google" type="button">Continue with Google</button>
+          <button class="btn btn-google" id="btn-google" type="button"><svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.4c-.5 2.9-2.2 5.3-4.6 6.9l7.4 5.7c4.3-4 6.9-9.9 6.9-17.1z"/><path fill="#FBBC05" d="M10.5 28.7c-.5-1.4-.8-3-.8-4.7s.3-3.2.8-4.7l-7.9-6.1C.9 16.4 0 20.1 0 24s.9 7.6 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.4-5.7c-2.1 1.4-4.8 2.3-8.5 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg><span>Continue with Google</span></button>
           <p class="or">or use email</p>
-          <div class="tabs" role="tablist">
-            <button role="tab" data-tab="login" aria-selected="true">Login</button>
-            <button role="tab" data-tab="register" aria-selected="false">Register</button>
+          <div class="tabs" role="tablist" data-active="login">
+            <button role="tab" data-tab="login" aria-selected="true" type="button">Login</button>
+            <button role="tab" data-tab="register" aria-selected="false" type="button">Register</button>
           </div>
 
           <section id="panel-login">
@@ -62,22 +80,61 @@
         </div>
 
         <div id="account" hidden>
-          <div class="avatar" id="acc-avatar" aria-hidden="true"></div>
-          <p><strong id="acc-name"></strong><br><span id="acc-email"></span></p>
-          <h2 class="sub">Student verification</h2>
-          <p id="ver-status"></p>
-          <form id="form-verify" hidden novalidate>
-            <div class="field"><label for="ver-id">Student ID</label>
-              <input id="ver-id" type="text" inputmode="numeric" autocomplete="off" required></div>
-            <div class="field"><label for="ver-dept">Department</label>
-              <input id="ver-dept" type="text" autocomplete="off" required></div>
-            <div class="field"><label for="ver-mail">University email (optional)</label>
-              <input id="ver-mail" type="email" autocomplete="off"></div>
-            <p class="note">Your student ID is visible only to you and the site administrator. See <a class="link" href="privacy.html">Privacy &amp; Terms</a>.</p>
-            <button class="btn" type="submit">Submit for review</button>
-          </form>
+          <div class="stats">
+            <div class="stat"><strong id="st-active">0</strong><span>Active listings</span></div>
+            <div class="stat"><strong id="st-sold">0</strong><span>Sold</span></div>
+            <div class="stat"><strong id="st-since">-</strong><span>Member since</span></div>
+          </div>
+
+          <div>
+            <h2 class="sub">Profile</h2>
+            <dl class="info">
+              <div><dt>University</dt><dd>University of Chittagong</dd></div>
+              <div><dt>Department</dt><dd id="info-dept">Not added yet</dd></div>
+              <div><dt>Student ID</dt><dd id="info-id">Not added yet</dd></div>
+              <div><dt>About me</dt><dd id="info-bio">Add a short bio</dd></div>
+            </dl>
+            <button class="btn btn-light" id="btn-edit" type="button">Edit profile</button>
+            <form id="form-edit" hidden novalidate>
+              <div class="field"><label for="ed-name">Name</label>
+                <input id="ed-name" type="text" maxlength="80" required></div>
+              <div class="field"><label for="ed-bio">About me</label>
+                <textarea id="ed-bio" rows="3" maxlength="160"></textarea>
+                <span class="counter" id="c-bio">0/160</span></div>
+              <div class="row2">
+                <button class="btn" type="submit">Save</button>
+                <button class="btn btn-light" id="btn-edit-cancel" type="button">Cancel</button>
+              </div>
+            </form>
+          </div>
+
+          <div>
+            <h2 class="sub">Student verification</h2>
+            <p id="ver-status"></p>
+            <form id="form-verify" hidden novalidate>
+              <div class="field"><label for="ver-id">Student ID</label>
+                <input id="ver-id" type="text" inputmode="numeric" autocomplete="off" required></div>
+              <div class="field"><label for="ver-dept">Department</label>
+                <input id="ver-dept" type="text" autocomplete="off" required></div>
+              <div class="field"><label for="ver-mail">University email (optional)</label>
+                <input id="ver-mail" type="email" autocomplete="off"></div>
+              <p class="note">Your student ID is visible only to you and the site administrator. See <a class="link" href="privacy.html">Privacy &amp; Terms</a>.</p>
+              <button class="btn" type="submit">Submit for review</button>
+            </form>
+          </div>
+
+          <div>
+            <h2 class="sub">Quick actions</h2>
+            <div class="qa-grid">
+              <a class="qa" href="post.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Post a listing</span></a>
+              <a class="qa" href="post.html#mine-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg><span>My listings</span></a>
+              <a class="qa" href="explore.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg><span>Explore</span></a>
+              <a class="qa" href="privacy.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg><span>Privacy &amp; Terms</span></a>
+            </div>
+          </div>
+
           <p id="admin-link" hidden><a class="btn" href="admin.html">Admin: review verification requests</a></p>
-          <p><button class="btn" id="btn-logout" type="button">Log out</button></p>
+          <p><button class="btn btn-light" id="btn-logout" type="button">Log out</button></p>
         </div>
       </div>
     </div>

@@ -106,7 +106,7 @@ form.addEventListener("submit", async (ev) => {
       campusId: "cu", status: "active", createdAt: serverTimestamp()
     });
     form.reset(); selected = []; renderPreview(); updateCounters(); $("price-wrap").hidden = false;
-    show("Your listing is live.", true);
+    if (window.HBFx) window.HBFx.success(); if (window.HBToast) window.HBToast.show("Your listing is live");
     loadMine();
   } catch (e) {
     show(e && e.code === "permission-denied" ? "You are not allowed to post yet. Check your verification." : "Could not publish. Please check your internet and try again.", false);

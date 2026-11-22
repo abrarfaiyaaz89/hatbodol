@@ -35,7 +35,10 @@ export function renderCard(l) {
   const src = l.images && l.images[0] ? thumb(l.images[0], 480, 360) : "";
   if (src) {
     const img = document.createElement("img");
-    img.src = src; img.alt = l.title; img.loading = "lazy";
+    img.className = "fade"; img.alt = l.title; img.loading = "lazy";
+    img.addEventListener("load", () => img.classList.add("loaded"));
+    img.src = src;
+    if (img.complete && img.naturalWidth) img.classList.add("loaded");
     box.append(img);
   } else {
     box.append(el("span", "No photo"));

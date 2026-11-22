@@ -43,17 +43,24 @@ service cloud.firestore {
         && request.resource.data.verificationStatus == 'unverified'
         && request.resource.data.createdAt == request.time;
 
-      allow update: if signedIn()
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['verificationStatus'])
-        && (
-          // student asks for review
-          (request.auth.uid == uid
-            && resource.data.verificationStatus in ['unverified','rejected']
-            && request.resource.data.verificationStatus == 'pending')
-          ||
-          // admin decides
-          (isAdmin() && request.resource.data.verificationStatus in ['verified','rejected'])
-        );
+      allow update: if signedIn() && (
+        // student edits own profile text
+        (request.auth.uid == uid
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['displayName','bio'])
+          && request.resource.data.displayName is string
+          && request.resource.data.displayName.size() >= 2 && request.resource.data.displayName.size() <= 80
+          && (!('bio' in request.resource.data) || (request.resource.data.bio is string && request.resource.data.bio.size() <= 160)))
+        ||
+        // verification status changes
+        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['verificationStatus'])
+          && (
+            (request.auth.uid == uid
+              && resource.data.verificationStatus in ['unverified','rejected']
+              && request.resource.data.verificationStatus == 'pending')
+            ||
+            (isAdmin() && request.resource.data.verificationStatus in ['verified','rejected'])
+          ))
+      );
 
       allow delete: if false;
     }

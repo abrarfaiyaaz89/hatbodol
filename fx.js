@@ -32,6 +32,25 @@
   };
   window.HBFx = Fx;
 
+  // Small non-blocking messages
+  var toastBox = null;
+  window.HBToast = {
+    show: function (text) {
+      if (!toastBox) {
+        toastBox = document.createElement('div');
+        toastBox.className = 'toasts';
+        toastBox.setAttribute('aria-live', 'polite');
+        document.body.appendChild(toastBox);
+      }
+      var t = document.createElement('div');
+      t.className = 'toast';
+      t.textContent = text;
+      toastBox.appendChild(t);
+      requestAnimationFrame(function () { t.classList.add('in'); });
+      setTimeout(function () { t.classList.remove('in'); setTimeout(function () { t.remove(); }, 300); }, 2600);
+    }
+  };
+
   // Every tap on a link or button
   document.addEventListener('click', function (e) {
     var t = e.target.closest && e.target.closest('a[href], button, [role="tab"]');

@@ -46,7 +46,7 @@ function render(l) {
       if (navigator.share) { await navigator.share({ title: l.title, url: location.href }); }
       else if (navigator.clipboard) {
         await navigator.clipboard.writeText(location.href);
-        share.textContent = "Link copied";
+        share.textContent = "Link copied"; if (window.HBToast) window.HBToast.show("Link copied");
         setTimeout(() => { share.textContent = "Share this listing"; }, 1800);
       }
     } catch (e) { /* cancelled */ }

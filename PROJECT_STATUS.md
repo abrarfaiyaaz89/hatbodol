@@ -14,6 +14,9 @@ Not yet tested: reject flow, non-admin access to admin.html, second user account
 Also: live Recent listings on homepage, skeleton loaders, sort + sticky filters on Explore, photo remove/progress/counters on Post, avatar on Account.
 post.html (create listing, Cloudinary photos, mark sold, delete), explore.html (newest first, category chips, search over loaded items, Load more). Needs: rules republished, listings index, Cloudinary config.
 
+## UX round 2 (built, untested)
+Animated login page (contour drawing, sliding tabs, Google button, loading spinners), full profile (avatar, verification badge, stats with count-up, department, masked student ID, bio editing, quick actions), toasts, hero headline reveal, image fade-in, bottom-nav pop. Rules updated: users may edit displayName and bio (republish firestore.rules).
+
 ## Known gaps
 No way to contact a seller yet (messaging is Phase 4). Listing detail page exists (listing.html); no edit page yet; Message seller button is disabled until Phase 4.
 Links to pages that do not exist yet. Search boxes not connected. Privacy & Terms page is a draft; review before inviting real students.
