@@ -14,10 +14,19 @@
   <main id="main">
     <div class="container">
       <h1>Explore</h1>
-      <div class="field"><label for="q">Search listings</label>
-        <input id="q" type="search" placeholder="Search by title or category" autocomplete="off"></div>
-      <div class="chips-row" id="chips" role="group" aria-label="Category filter"></div>
-      <p id="note" class="msg" role="status" aria-live="polite">Loading...</p>
+      <div class="filter-bar">
+        <div class="filter-row">
+          <input id="q" type="search" aria-label="Search listings" placeholder="Search listings" autocomplete="off">
+          <select id="sort" aria-label="Sort listings">
+            <option value="new">Newest</option>
+            <option value="low">Price: low to high</option>
+            <option value="high">Price: high to low</option>
+          </select>
+        </div>
+        <div class="chips-row" id="chips" role="group" aria-label="Category filter"></div>
+      </div>
+      <p id="count" class="lmeta"></p>
+      <p id="note" class="msg" role="status" aria-live="polite"></p>
       <div id="grid" class="lgrid"></div>
       <p class="center"><button class="btn" id="more" type="button" hidden>Load more</button></p>
     </div>

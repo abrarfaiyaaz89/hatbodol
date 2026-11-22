@@ -28,16 +28,35 @@ $("photo-note").textContent = photosConfigured
   : "Photo upload is not set up yet, so listings are posted without photos.";
 if (!photosConfigured) $("p-photos").disabled = true;
 
-// Previews
-$("p-photos").addEventListener("change", () => {
+// Photos: keep our own list so each photo can be removed
+let selected = [];
+function renderPreview() {
   const prev = $("preview"); prev.replaceChildren();
-  Array.from($("p-photos").files).slice(0, 3).forEach((f) => {
+  selected.forEach((f, i) => {
+    const w = el("div", undefined, "pv");
     const img = document.createElement("img");
-    img.src = URL.createObjectURL(f); img.alt = "Selected photo";
-    img.onload = () => URL.revokeObjectURL(img.src);
-    prev.append(img);
+    const u = URL.createObjectURL(f);
+    img.src = u; img.alt = "Selected photo " + (i + 1); img.onload = () => URL.revokeObjectURL(u);
+    const x = el("button", "\u2715", "pv-x"); x.type = "button"; x.setAttribute("aria-label", "Remove photo " + (i + 1));
+    x.addEventListener("click", () => { selected.splice(i, 1); renderPreview(); });
+    w.append(img, x); prev.append(w);
   });
+}
+$("p-photos").addEventListener("change", () => {
+  const room = 3 - selected.length;
+  Array.from($("p-photos").files)
+    .filter((f) => f.type.startsWith("image/") && f.size <= 15 * 1024 * 1024)
+    .slice(0, room).forEach((f) => selected.push(f));
+  $("p-photos").value = "";
+  renderPreview();
 });
+
+function updateCounters() {
+  $("c-title").textContent = $("p-title").value.length + "/80";
+  $("c-desc").textContent = $("p-desc").value.length + "/1000";
+}
+$("p-title").addEventListener("input", updateCounters);
+$("p-desc").addEventListener("input", updateCounters);
 
 function loadImg(file) {
   return new Promise((res, rej) => {
@@ -70,18 +89,23 @@ form.addEventListener("submit", async (ev) => {
   const price = type === "exchange" ? 0 : Number($("p-price").value);
   if (title.length < 3) { show("Please enter a title (at least 3 characters).", false); return; }
   if (type === "sell" && (!isFinite(price) || price < 0 || $("p-price").value === "")) { show("Please enter a valid price.", false); return; }
-  const files = Array.from($("p-photos").files).slice(0, 3);
+  const files = selected.slice();
   btn.disabled = true; btn.textContent = "Publishing...";
   show("", true);
   try {
     const images = [];
-    for (const f of files) images.push(await upload(await compress(f)));
+    let n = 0;
+    for (const f of files) {
+      n++; btn.textContent = "Uploading photo " + n + " of " + files.length + "...";
+      images.push(await upload(await compress(f)));
+    }
+    btn.textContent = "Publishing...";
     await addDoc(collection(db, "listings"), {
       type, title, description: desc, category: $("p-category").value, condition: $("p-condition").value,
       price, images, titleKeywords: keywords(title), ownerId: currentUser.uid, ownerName,
       campusId: "cu", status: "active", createdAt: serverTimestamp()
     });
-    form.reset(); $("preview").replaceChildren(); $("price-wrap").hidden = false;
+    form.reset(); selected = []; renderPreview(); updateCounters(); $("price-wrap").hidden = false;
     show("Your listing is live.", true);
     loadMine();
   } catch (e) {

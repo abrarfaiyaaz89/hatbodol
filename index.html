@@ -57,7 +57,8 @@
     <section class="section">
       <div class="container">
         <div class="section-head reveal"><h2>Recent listings</h2><a href="explore.html">See all</a></div>
-        <div class="empty reveal">
+        <div id="recent-grid" class="lgrid"></div>
+        <div id="recent-empty" class="empty" hidden>
           <p>No listings yet. Be the first student to post something.</p>
           <a class="btn" href="post.html">Post a listing</a>
         </div>
@@ -93,5 +94,6 @@
   <div id="site-bottom-nav"></div>
   <script src="layout.js"></script>
   <script src="home.js"></script>
+  <script type="module" src="recent.js"></script>
 </body>
 </html>

@@ -177,6 +177,15 @@ onAuthStateChanged(auth, (user) => {
   $("account").hidden = !signedIn;
   if (user) {
     $("acc-name").textContent = user.displayName || "Student";
+    const av = $("acc-avatar");
+    if (av) {
+      av.replaceChildren();
+      if (user.photoURL) {
+        const im = document.createElement("img");
+        im.src = user.photoURL; im.alt = ""; im.referrerPolicy = "no-referrer";
+        av.append(im);
+      } else { av.textContent = (user.displayName || user.email || "S").trim().charAt(0).toUpperCase(); }
+    }
     $("acc-email").textContent = user.email || "";
     loadProfile(user);
   }

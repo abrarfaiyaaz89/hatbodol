@@ -19,12 +19,18 @@ export function thumb(url, w, h) {
   return url.replace("/upload/", "/upload/w_" + w + ",h_" + h + ",c_fill,q_auto,f_auto/");
 }
 
+export function fit(url, w) {
+  if (!/^https:\/\/res\.cloudinary\.com\//.test(url)) return "";
+  return url.replace("/upload/", "/upload/w_" + w + ",c_limit,q_auto,f_auto/");
+}
+
 export function priceText(l) {
   return l.type === "exchange" ? "Exchange" : "\u09F3 " + Number(l.price).toLocaleString("en-US");
 }
 
 export function renderCard(l) {
-  const card = el("article", undefined, "lcard");
+  const card = l.id ? el("a", undefined, "lcard") : el("article", undefined, "lcard");
+  if (l.id) card.href = "listing.html?id=" + encodeURIComponent(l.id);
   const box = el("div", undefined, "lthumb");
   const src = l.images && l.images[0] ? thumb(l.images[0], 480, 360) : "";
   if (src) {
@@ -34,6 +40,7 @@ export function renderCard(l) {
   } else {
     box.append(el("span", "No photo"));
   }
+  if (l.status === "sold") box.append(el("span", "Sold", "badge"));
   const body = el("div", undefined, "lbody");
   body.append(
     el("strong", l.title, "ltitle"),
@@ -43,4 +50,17 @@ export function renderCard(l) {
   );
   card.append(box, body);
   return card;
+}
+
+export function skeletonCards(n) {
+  const out = [];
+  for (let i = 0; i < n; i++) {
+    const c = el("div", undefined, "lcard skeleton");
+    c.setAttribute("aria-hidden", "true");
+    const b = el("div", undefined, "lbody");
+    b.append(el("div", undefined, "sk-line"), el("div", undefined, "sk-line short"));
+    c.append(el("div", undefined, "lthumb"), b);
+    out.push(c);
+  }
+  return out;
 }

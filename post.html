@@ -22,7 +22,8 @@
           <div class="field"><label for="p-type">I want to</label>
             <select id="p-type"><option value="sell">Sell</option><option value="exchange">Exchange</option></select></div>
           <div class="field"><label for="p-title">Title</label>
-            <input id="p-title" type="text" maxlength="80" required></div>
+            <input id="p-title" type="text" maxlength="80" required>
+            <span class="counter" id="c-title">0/80</span></div>
           <div class="field"><label for="p-category">Category</label>
             <select id="p-category"></select></div>
           <div class="field"><label for="p-condition">Condition</label>
@@ -33,7 +34,8 @@
           <div class="field" id="price-wrap"><label for="p-price">Price (&#2547;)</label>
             <input id="p-price" type="number" min="0" max="10000000" step="1" inputmode="numeric"></div>
           <div class="field"><label for="p-desc">Description</label>
-            <textarea id="p-desc" rows="4" maxlength="1000"></textarea></div>
+            <textarea id="p-desc" rows="4" maxlength="1000"></textarea>
+            <span class="counter" id="c-desc">0/1000</span></div>
           <div class="field"><label for="p-photos">Photos (up to 3)</label>
             <input id="p-photos" type="file" accept="image/*" multiple>
             <p class="note" id="photo-note"></p>
