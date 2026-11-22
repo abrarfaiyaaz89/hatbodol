@@ -1,0 +1,47 @@
+/* HATBODOL UI fix: paste at the VERY BOTTOM of your main CSS file */
+
+/* 1. Unsized SVG icons were stretching to full screen width */
+:where(svg:not([width]):not([height])) {
+  width: 1.25em; height: 1.25em; flex-shrink: 0; vertical-align: -0.2em;
+}
+svg { max-width: 100%; }
+[class*="action"] svg, [class*="quick"] svg, [class*="card"] svg,
+[class*="tile"] svg, [class*="link"] svg, button svg, a svg {
+  width: 22px; height: 22px; flex-shrink: 0;
+}
+[class*="shield"] svg, [class*="compass"] svg { width: 22px; height: 22px; }
+
+/* 2. Cover banner: replace the giant black wave with a clean brand gradient */
+[class*="cover"], [class*="banner"], [class*="hero-bg"] {
+  height: 140px; max-height: 140px; overflow: hidden; position: relative;
+  background: linear-gradient(135deg, #1f2328 0%, #3a3f45 55%, #f26a1b 130%);
+}
+[class*="cover"] svg, [class*="banner"] svg, [class*="hero-bg"] svg { display: none; }
+[class*="cover"] img, [class*="banner"] img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+
+/* 3. Page width: comfortable on phone, centered on desktop */
+main, .container, [class*="page"], [class*="profile"] {
+  box-sizing: border-box;
+}
+main { width: 100%; max-width: 1100px; margin-inline: auto; padding-inline: 16px; }
+
+/* 4. Quick actions: tidy card grid */
+[class*="quick"] {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+[class*="quick"] > a, [class*="quick"] > button, [class*="quick"] > div {
+  display: flex; align-items: center; gap: 10px; padding: 14px 16px;
+  border: 1px solid #e5e7eb; border-radius: 12px; background: #fff;
+  color: inherit; text-decoration: none; font-weight: 600;
+}
+[class*="quick"] > a:hover, [class*="quick"] > button:hover { border-color: #f26a1b; }
+
+/* 5. Profile avatar + spacing */
+[class*="avatar"] { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; }
+@media (min-width: 900px) {
+  [class*="cover"], [class*="banner"], [class*="hero-bg"] { height: 200px; max-height: 200px; }
+  main { padding-inline: 32px; }
+  [class*="avatar"] { width: 96px; height: 96px; }
+}
