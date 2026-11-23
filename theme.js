@@ -9,6 +9,7 @@
     if (m) m.setAttribute('content', t === 'dark' ? '#141414' : '#ffffff');
   }
   apply(stored() || system());
+  try { if (localStorage.getItem('hb-signed') === '1') root.classList.add('signed-in'); } catch (e) {}
   window.HBTheme = {
     toggle: function () {
       var n = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';

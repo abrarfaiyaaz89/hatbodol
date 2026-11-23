@@ -32,8 +32,9 @@
         '<button type="submit" aria-label="Search">' + svg('search', 20) + '</button>' +
       '</form>' +
       '<button class="icon-btn" id="theme-toggle" type="button" aria-label="Switch dark mode"><span class="moon">' + svg('moon', 20) + '</span><span class="sun">' + svg('sun', 20) + '</span></button>' +
-      '<a class="btn-login" href="auth.html"' + cur('profile') + '>Account</a>' +
+      '<a class="btn-login" href="auth.html"' + cur('profile') + '>Login</a>' +
       '<a class="btn-post" href="post.html">Post</a>' +
+      '<div class="um" id="user-menu"></div>' +
     '</div></header>';
 
   var bottom =
@@ -50,7 +51,7 @@
       '<div class="cols">' +
         '<div><h2>HATBODOL</h2><p>A student marketplace for the University of Chittagong.</p></div>' +
         '<div><h2>Explore</h2><ul><li><a href="explore.html">Marketplace</a></li><li><a href="services.html">Services</a></li><li><a href="vendors.html">Food &amp; Vendors</a></li></ul></div>' +
-        '<div><h2>Help</h2><ul><li><a href="help.html">Help &amp; Support</a></li><li><a href="about.html">About</a></li><li><a href="privacy.html">Privacy &amp; Terms</a></li></ul></div>' +
+        '<div><h2>Help</h2><ul><li><a href="help.html">Help &amp; Support</a></li><li><a href="about.html">About</a></li><li><a href="settings.html">Settings</a></li><li><a href="privacy.html">Privacy &amp; Terms</a></li></ul></div>' +
       '</div>' +
       '<button class="fx-btn" id="fx-toggle" type="button">Sound &amp; vibration</button>' +
       '<p class="copy">&copy; ' + new Date().getFullYear() + ' HATBODOL</p>' +
@@ -65,4 +66,8 @@
   var fx = document.createElement('script');
   fx.src = 'fx.js';
   document.body.appendChild(fx);
+  var um = document.createElement('script');
+  um.type = 'module';
+  um.src = 'usermenu.js';
+  document.body.appendChild(um);
 })();

@@ -28,7 +28,9 @@
     tap: function () { vibrate(8); tone(700, 0.045, 'sine', 0.035); },
     heavy: function () { vibrate(18); tone(520, 0.07, 'sine', 0.05); tone(780, 0.09, 'sine', 0.04, 0.05); },
     success: function () { vibrate([12, 40, 12]); tone(660, 0.1, 'sine', 0.05); tone(990, 0.16, 'sine', 0.05, 0.09); },
-    error: function () { vibrate([30, 40, 30]); tone(220, 0.2, 'triangle', 0.06); }
+    error: function () { vibrate([30, 40, 30]); tone(220, 0.2, 'triangle', 0.06); },
+    isOn: on,
+    setOn: setOn
   };
   window.HBFx = Fx;
 

@@ -17,6 +17,9 @@ post.html (create listing, Cloudinary photos, mark sold, delete), explore.html (
 ## UX round 2 (built, untested)
 Animated login page (contour drawing, sliding tabs, Google button, loading spinners), full profile (avatar, verification badge, stats with count-up, department, masked student ID, bio editing, quick actions), toasts, hero headline reveal, image fade-in, bottom-nav pop. Rules updated: users may edit displayName and bio (republish firestore.rules).
 
+## Account menu (built, untested)
+usermenu.js: 32px avatar button, role=menu panel aligned to the avatar's right edge, label not focusable, Profile/Settings/Sign out, Escape returns focus. settings.html has dark mode and sound switches.
+
 ## Known gaps
 No way to contact a seller yet (messaging is Phase 4). Listing detail page exists (listing.html); no edit page yet; Message seller button is disabled until Phase 4.
 Links to pages that do not exist yet. Search boxes not connected. Privacy & Terms page is a draft; review before inviting real students.
