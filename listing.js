@@ -1,6 +1,6 @@
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { db } from "./fb.js";
-import { CONDITIONS, el, fit, priceText } from "./listings.js";
+import { CONDITIONS, el, fit, priceText, verifiedTick } from "./listings.js";
 
 const box = document.getElementById("detail");
 const id = new URLSearchParams(location.search).get("id") || "";
@@ -34,7 +34,15 @@ function render(l) {
 
   const when = l.createdAt && l.createdAt.toDate
     ? l.createdAt.toDate().toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "";
-  parts.push(el("p", "Posted by " + (l.ownerName || "Student") + (when ? " on " + when : ""), "lmeta"));
+  const by = el("p", undefined, "lmeta");
+  by.append(document.createTextNode("Posted by "));
+  const who = el("a", l.ownerName || "Student", "link");
+  who.href = "profile.html?uid=" + encodeURIComponent(l.ownerId || "");
+  const tickSlot = el("span");
+  by.append(who, tickSlot, document.createTextNode(when ? " on " + when : ""));
+  parts.push(by);
+  // Blue tick (only visible to signed-in users, as profiles are for signed-in users)
+  getDoc(doc(db, "publicProfiles", l.ownerId)).then((s) => { if (s.exists() && s.data().verified) tickSlot.append(verifiedTick()); }).catch(() => {});
 
   const actions = el("div", undefined, "actions");
   const msgBtn = el("button", "Message seller (coming soon)", "btn btn-light");

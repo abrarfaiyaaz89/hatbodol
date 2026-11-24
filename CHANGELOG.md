@@ -12,3 +12,6 @@
 
 ## 2026-11-22
 - Account menu in the top bar (avatar button, keyboard accessible), Settings page, dark mode moved into the menu on phones.
+
+## 2026-11-22 (profile update)
+- Public profile page with blue verified tick, Admin badge, 5-star ratings (seller and buyer), editable photo, department, session, hometown (64 districts), addresses with privacy toggle. Student ID shown to verified students only.

@@ -474,3 +474,35 @@ section[id^="panel-"]:not([hidden]) { animation: rise .35s var(--ease) both; }
 .switch .knob { position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: var(--c-black); transition: transform .25s var(--ease), background-color .2s var(--ease); }
 .switch[aria-checked="true"] { background: var(--c-black); }
 .switch[aria-checked="true"] .knob { transform: translateX(22px); background: var(--c-white); }
+
+/* ---------- Profile: verified tick, admin badge, ratings, edit form ---------- */
+.vtick { display: inline-flex; vertical-align: middle; margin-left: 6px; color: #1d9bf0; font-size: .8em; }
+.vtick svg { width: 1em; height: 1em; }
+.vbadge.admin { background: #6b3fd4; }
+.badge-row { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.badge-row .vbadge { margin-top: var(--space-3); }
+.sub-row { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-3); }
+.photo-row { display: flex; align-items: center; gap: var(--space-4); }
+.photo-row .avatar { margin: 0; flex: none; }
+.photo-actions { display: grid; gap: var(--space-2); min-width: 0; }
+.photo-actions input { font-size: 14px; max-width: 100%; }
+.check { display: flex; gap: var(--space-2); align-items: center; margin-bottom: var(--space-4); font-weight: 600; }
+.check input { width: 20px; height: 20px; accent-color: var(--c-black); }
+.stats-2 { grid-template-columns: repeat(2, 1fr); }
+.pub-sheet > * { margin-bottom: var(--space-4); }
+.pub-sheet .lgrid { margin-top: 0; }
+.rate-sum { display: grid; gap: var(--space-2); }
+.rate-line { display: flex; justify-content: space-between; gap: var(--space-3); padding: var(--space-2) 0; border-bottom: 1px solid var(--c-gray-300); }
+.stars { color: #f5a623; letter-spacing: 1px; }
+.reviews { display: grid; gap: var(--space-3); }
+.review { padding: var(--space-3); border: 1.5px solid var(--c-gray-300); border-radius: var(--radius-m); }
+.review p { margin: var(--space-2) 0 0; }
+.review-top { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
+.rate-form { padding-top: var(--space-3); border-top: 1px solid var(--c-gray-300); }
+.starpick { display: flex; gap: 4px; border: 0; padding: 0; margin: 0 0 var(--space-3); position: relative; }
+.starpick input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.starpick label { font-size: 34px; line-height: 1; cursor: pointer; color: var(--c-gray-300); transition: color .15s var(--ease), transform .15s var(--ease); }
+.starpick label.on { color: #f5a623; }
+.starpick label:active { transform: scale(1.2); }
+.starpick input:focus-visible + label { outline: 2px solid var(--c-black); border-radius: 4px; }
+.rate-form .btn { width: 100%; border: 0; cursor: pointer; position: relative; }

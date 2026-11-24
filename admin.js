@@ -1,5 +1,5 @@
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { collection, query, where, getDocs, getDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { collection, query, where, getDocs, getDoc, doc, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { auth, db } from "./fb.js";
 
 const note = document.getElementById("note");
@@ -13,10 +13,17 @@ function el(tag, text, cls) {
   return n;
 }
 
-async function decide(card, uid, status, buttons) {
+async function decide(card, uid, status, buttons, u, p) {
   buttons.forEach((b) => { b.disabled = true; });
   try {
-    await updateDoc(doc(db, "users", uid), { verificationStatus: status });
+    const batch = writeBatch(db);
+    batch.update(doc(db, "users", uid), { verificationStatus: status });
+    const name = (u.displayName || "").trim();
+    const pub = { displayName: name.length >= 2 ? name.slice(0, 80) : "Student", verified: status === "verified" };
+    if (status === "verified" && p.department) pub.department = String(p.department).slice(0, 80);
+    batch.set(doc(db, "publicProfiles", uid), pub, { merge: true });
+    if (status === "verified" && p.studentId) batch.set(doc(db, "studentIds", uid), { studentId: p.studentId });
+    await batch.commit();
     card.remove();
     if (!list.children.length) { note.className = "msg ok"; note.textContent = "No pending requests."; }
   } catch (e) {
@@ -45,8 +52,8 @@ async function load() {
     const row = el("div", undefined, "row");
     const ok = el("button", "Approve", "btn"); ok.type = "button";
     const no = el("button", "Reject", "btn btn-light"); no.type = "button";
-    ok.addEventListener("click", () => decide(card, d.id, "verified", [ok, no]));
-    no.addEventListener("click", () => decide(card, d.id, "rejected", [ok, no]));
+    ok.addEventListener("click", () => decide(card, d.id, "verified", [ok, no], u, p));
+    no.addEventListener("click", () => decide(card, d.id, "rejected", [ok, no], u, p));
     row.append(ok, no);
     card.append(row);
     list.append(card);

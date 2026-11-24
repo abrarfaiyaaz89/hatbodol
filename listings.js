@@ -67,3 +67,13 @@ export function skeletonCards(n) {
   }
   return out;
 }
+
+// Blue verified tick (static markup, no user data)
+export function verifiedTick() {
+  const t = el("span", undefined, "vtick");
+  t.setAttribute("role", "img");
+  t.setAttribute("aria-label", "Verified");
+  t.title = "Verified student";
+  t.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="currentColor"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  return t;
+}

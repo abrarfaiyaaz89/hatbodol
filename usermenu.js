@@ -6,6 +6,13 @@ const slot = document.getElementById("user-menu");
 const root = document.documentElement;
 let btn = null, panel = null, isOpen = false;
 
+function cachedPhoto(uid) {
+  try {
+    const v = JSON.parse(localStorage.getItem("hb-photo") || "null");
+    return v && v.uid === uid && /^https:\/\/res\.cloudinary\.com\//.test(v.url) ? v.url : "";
+  } catch (e) { return ""; }
+}
+
 function mk(tag, cls, text) {
   const n = document.createElement(tag);
   if (cls) n.className = cls;
@@ -53,9 +60,10 @@ function build(user) {
   btn.setAttribute("aria-expanded", "false");
   btn.setAttribute("aria-controls", "um-panel");
   btn.setAttribute("aria-label", "Account menu for " + name);
-  if (user.photoURL) {
+  const photo = cachedPhoto(user.uid) || user.photoURL;
+  if (photo) {
     const img = document.createElement("img");
-    img.src = user.photoURL; img.alt = ""; img.referrerPolicy = "no-referrer"; img.decoding = "async";
+    img.src = photo; img.alt = ""; img.referrerPolicy = "no-referrer"; img.decoding = "async";
     btn.append(img);
   } else {
     btn.append(document.createTextNode((name || email || "S").trim().charAt(0).toUpperCase()));

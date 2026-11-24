@@ -87,20 +87,45 @@
           </div>
 
           <div>
-            <h2 class="sub">Profile</h2>
+            <div class="sub-row"><h2 class="sub">Profile</h2><a class="link" id="pub-link" href="profile.html">View public profile</a></div>
             <dl class="info">
               <div><dt>University</dt><dd>University of Chittagong</dd></div>
               <div><dt>Department</dt><dd id="info-dept">Not added yet</dd></div>
+              <div><dt>Session</dt><dd id="info-session">Not added yet</dd></div>
+              <div><dt>Hometown</dt><dd id="info-home">Not added yet</dd></div>
               <div><dt>Student ID</dt><dd id="info-id">Not added yet</dd></div>
+              <div><dt>Permanent address</dt><dd id="info-perm">Not added yet</dd></div>
+              <div><dt>Present address</dt><dd id="info-pres">Not added yet</dd></div>
               <div><dt>About me</dt><dd id="info-bio">Add a short bio</dd></div>
             </dl>
+            <p class="note" id="priv-note">Your student ID is shown only to verified students. Your addresses stay private unless you choose to share them.</p>
             <button class="btn btn-light" id="btn-edit" type="button">Edit profile</button>
             <form id="form-edit" hidden novalidate>
+              <div class="field"><label for="ed-photo">Profile photo</label>
+                <div class="photo-row">
+                  <div class="avatar" id="ed-avatar" aria-hidden="true"></div>
+                  <div class="photo-actions">
+                    <input id="ed-photo" type="file" accept="image/*">
+                    <button class="link" id="btn-photo-remove" type="button">Remove photo</button>
+                  </div>
+                </div>
+                <p class="note" id="photo-note"></p></div>
               <div class="field"><label for="ed-name">Name</label>
                 <input id="ed-name" type="text" maxlength="80" required></div>
+              <div class="field"><label for="ed-dept">Department</label>
+                <input id="ed-dept" type="text" maxlength="80"></div>
+              <div class="field"><label for="ed-session">Session (for example 2025-26)</label>
+                <input id="ed-session" type="text" maxlength="20"></div>
+              <div class="field"><label for="ed-home">Hometown (district)</label>
+                <select id="ed-home"><option value="">Select district</option></select></div>
               <div class="field"><label for="ed-bio">About me</label>
                 <textarea id="ed-bio" rows="3" maxlength="160"></textarea>
                 <span class="counter" id="c-bio">0/160</span></div>
+              <div class="field"><label for="ed-perm">Permanent address</label>
+                <textarea id="ed-perm" rows="2" maxlength="200"></textarea></div>
+              <div class="field"><label for="ed-pres">Present address</label>
+                <textarea id="ed-pres" rows="2" maxlength="200"></textarea></div>
+              <label class="check"><input id="ed-share" type="checkbox"> <span>Show my addresses on my public profile</span></label>
               <div class="row2">
                 <button class="btn" type="submit">Save</button>
                 <button class="btn btn-light" id="btn-edit-cancel" type="button">Cancel</button>

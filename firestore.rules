@@ -24,9 +24,27 @@ service cloud.firestore {
         && d.campusId == 'cu';
     }
 
+    function districts() { return ["Bagerhat", "Bandarban", "Barguna", "Barishal", "Bhola", "Bogura", "Brahmanbaria", "Chandpur", "Chapainawabganj", "Chattogram", "Chuadanga", "Cumilla", "Cox's Bazar", "Dhaka", "Dinajpur", "Faridpur", "Feni", "Gaibandha", "Gazipur", "Gopalganj", "Habiganj", "Jamalpur", "Jashore", "Jhalokati", "Jhenaidah", "Joypurhat", "Khagrachhari", "Khulna", "Kishoreganj", "Kurigram", "Kushtia", "Lakshmipur", "Lalmonirhat", "Madaripur", "Magura", "Manikganj", "Meherpur", "Moulvibazar", "Munshiganj", "Mymensingh", "Naogaon", "Narail", "Narayanganj", "Narsingdi", "Natore", "Netrokona", "Nilphamari", "Noakhali", "Pabna", "Panchagarh", "Patuakhali", "Pirojpur", "Rajbari", "Rajshahi", "Rangamati", "Rangpur", "Satkhira", "Shariatpur", "Sherpur", "Sirajganj", "Sunamganj", "Sylhet", "Tangail", "Thakurgaon"]; }
+
+    function validPublic(d) {
+      return d.keys().hasOnly(['displayName','photo','bio','department','session','hometown','verified'])
+        && d.displayName is string && d.displayName.size() >= 2 && d.displayName.size() <= 80
+        && (!('photo' in d) || d.photo == '' || (d.photo is string && d.photo.size() <= 300 && d.photo.matches('https://res\\.cloudinary\\.com/.*')))
+        && (!('bio' in d) || (d.bio is string && d.bio.size() <= 160))
+        && (!('department' in d) || (d.department is string && d.department.size() <= 80))
+        && (!('session' in d) || (d.session is string && d.session.size() <= 20))
+        && (!('hometown' in d) || d.hometown == '' || d.hometown in districts())
+        && (!('verified' in d) || d.verified is bool);
+    }
+
+    function isVerifiedUser() {
+      return signedIn() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.verificationStatus == 'verified';
+    }
+
     // Admins are added by hand in the Firebase console. Clients can never write here.
     match /admins/{uid} {
-      allow read: if signedIn() && request.auth.uid == uid;
+      // Signed-in users can see who is an admin (for the Admin badge). Nobody can write from the site.
+      allow read: if signedIn();
       allow write: if false;
     }
 
@@ -105,6 +123,66 @@ service cloud.firestore {
         );
 
       allow delete: if signedIn() && (resource.data.ownerId == request.auth.uid || isAdmin());
+    }
+
+    match /publicProfiles/{uid} {
+      allow read: if signedIn();
+      allow create, update: if signedIn() && validPublic(request.resource.data) && (
+        // owner: can only claim "verified" if the account really is verified
+        (request.auth.uid == uid
+          && (!('verified' in request.resource.data)
+              || request.resource.data.verified == (get(/databases/$(database)/documents/users/$(uid)).data.verificationStatus == 'verified')))
+        || isAdmin()
+      );
+      allow delete: if false;
+    }
+
+    // Addresses: private to the owner and admins unless the owner sets visible = true.
+    match /addresses/{uid} {
+      allow read: if signedIn() && (request.auth.uid == uid || isAdmin() || resource.data.visible == true);
+      allow create, update: if signedIn() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['permanent','present','visible'])
+        && request.resource.data.permanent is string && request.resource.data.permanent.size() <= 200
+        && request.resource.data.present is string && request.resource.data.present.size() <= 200
+        && request.resource.data.visible is bool;
+      allow delete: if false;
+    }
+
+    // Student ID shown to verified students only. Value must match the admin-reviewed submission.
+    match /studentIds/{uid} {
+      allow read: if signedIn() && (request.auth.uid == uid || isAdmin() || isVerifiedUser());
+      allow create, update: if signedIn()
+        && request.resource.data.keys().hasOnly(['studentId'])
+        && request.resource.data.studentId is string && request.resource.data.studentId.size() <= 20
+        && (
+          (request.auth.uid == uid
+            && request.resource.data.studentId == get(/databases/$(database)/documents/studentProfiles/$(uid)).data.studentId)
+          || isAdmin()
+        );
+      allow delete: if false;
+    }
+
+    // Ratings (1 to 5 stars). One rating per pair of people. Admins cannot be rated.
+    match /reviews/{id} {
+      allow read: if signedIn();
+      allow create: if isVerifiedUser()
+        && request.resource.data.keys().hasOnly(['reviewerId','reviewerName','targetId','as','rating','text','createdAt'])
+        && request.resource.data.reviewerId == request.auth.uid
+        && request.resource.data.targetId is string
+        && request.resource.data.targetId != request.auth.uid
+        && id == request.auth.uid + '_' + request.resource.data.targetId
+        && !exists(/databases/$(database)/documents/admins/$(request.resource.data.targetId))
+        && request.resource.data.as in ['seller','buyer']
+        && request.resource.data.rating is int && request.resource.data.rating >= 1 && request.resource.data.rating <= 5
+        && request.resource.data.text is string && request.resource.data.text.size() <= 300
+        && request.resource.data.reviewerName is string && request.resource.data.reviewerName.size() <= 80
+        && request.resource.data.createdAt == request.time;
+      allow update: if signedIn() && resource.data.reviewerId == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['rating','text','as'])
+        && request.resource.data.as in ['seller','buyer']
+        && request.resource.data.rating is int && request.resource.data.rating >= 1 && request.resource.data.rating <= 5
+        && request.resource.data.text is string && request.resource.data.text.size() <= 300;
+      allow delete: if signedIn() && (resource.data.reviewerId == request.auth.uid || isAdmin());
     }
 
     // Everything else stays closed until its phase is built.
