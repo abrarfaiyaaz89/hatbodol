@@ -506,3 +506,63 @@ section[id^="panel-"]:not([hidden]) { animation: rise .35s var(--ease) both; }
 .starpick label:active { transform: scale(1.2); }
 .starpick input:focus-visible + label { outline: 2px solid var(--c-black); border-radius: 4px; }
 .rate-form .btn { width: 100%; border: 0; cursor: pointer; position: relative; }
+
+/* ---------- Login page: glass card (black and white) ---------- */
+main.gl-page { position: relative; overflow: hidden; background: #07070a; color: #fff; min-height: calc(100vh - var(--header-h)); padding: 64px 0 calc(var(--bottomnav-h) + 40px); }
+.gl-lines { position: absolute; inset: 0; width: 100%; height: 100%; color: #fff; opacity: .2; pointer-events: none; }
+.gl-lines path { fill: none; stroke: currentColor; stroke-width: 1.2; }
+.gl-lines g { animation: drift 28s ease-in-out infinite alternate; }
+.gl-glow { position: absolute; border-radius: 50%; pointer-events: none; }
+.gl-glow.g1 { width: 520px; height: 520px; top: -160px; left: -160px; background: radial-gradient(circle, rgba(255,255,255,.22), transparent 65%); animation: float 16s ease-in-out infinite alternate; }
+.gl-glow.g2 { width: 620px; height: 620px; bottom: -240px; right: -200px; background: radial-gradient(circle, rgba(160,160,170,.3), transparent 65%); animation: float 20s ease-in-out infinite alternate-reverse; }
+@keyframes float { to { transform: translate(40px, 30px) scale(1.08); } }
+.gl-loading { position: relative; text-align: center; color: rgba(255,255,255,.8); }
+.gl-card {
+  position: relative; z-index: 2; max-width: 400px; margin: 36px auto 0; padding: 56px 24px 24px; border-radius: 32px;
+  background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.22);
+  -webkit-backdrop-filter: blur(18px) saturate(140%); backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: 0 20px 60px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.18);
+  animation: sheet-up .7s var(--ease) both;
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .gl-card { background: rgba(24,24,28,.96); } }
+.gl-avatar { position: absolute; top: -36px; left: 50%; transform: translateX(-50%); width: 72px; height: 72px; border-radius: 50%; display: grid; place-items: center; color: #fff; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.3); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.gl-avatar svg { width: 34px; height: 34px; }
+.gl-card h1 { margin: 0; text-align: center; font-size: 28px; }
+.gl-sub { margin: 4px 0 20px; text-align: center; color: rgba(255,255,255,.78); }
+.gl-msg:empty { display: none; }
+.gl-msg { padding: 10px 12px; border-radius: 12px; font-size: 14px; margin: 0 0 14px; color: #fff; }
+.gl-msg.err { background: rgba(255,90,90,.18); border: 1px solid rgba(255,120,120,.5); }
+.gl-msg.ok { background: rgba(80,220,140,.16); border: 1px solid rgba(120,240,170,.5); }
+.gl-card form:not([hidden]) { animation: rise .35s var(--ease) both; }
+.gl-field { position: relative; margin-bottom: 14px; }
+.gl-field input { width: 100%; height: 52px; padding: 0 48px 0 46px; border-radius: 14px; border: 1px solid rgba(255,255,255,.22); background: rgba(255,255,255,.1); color: #fff; font-size: 16px; transition: border-color .2s var(--ease), background-color .2s var(--ease), box-shadow .2s var(--ease); }
+.gl-field input::placeholder { color: rgba(255,255,255,.7); }
+.gl-field input:focus { outline: none; border-color: rgba(255,255,255,.75); background: rgba(255,255,255,.16); box-shadow: 0 0 0 3px rgba(255,255,255,.16); }
+.gl-field input:-webkit-autofill { -webkit-text-fill-color: #fff; box-shadow: 0 0 0 100px #2a2a30 inset; caret-color: #fff; }
+.gl-ico { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); display: grid; color: rgba(255,255,255,.85); pointer-events: none; }
+.gl-ico svg { width: 20px; height: 20px; }
+.gl-eye { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; border: 0; border-radius: 10px; background: transparent; color: rgba(255,255,255,.85); display: grid; place-items: center; cursor: pointer; }
+.gl-eye svg { width: 20px; height: 20px; }
+.gl-eye .eye-off { display: none; }
+.gl-eye[aria-pressed="true"] .eye-on { display: none; }
+.gl-eye[aria-pressed="true"] .eye-off { display: block; }
+.gl-eye:focus-visible, .gl-link:focus-visible, .gl-btn:focus-visible, .gl-google:focus-visible, .gl-check input:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.gl-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 4px 0 16px; font-size: 14px; }
+.gl-check { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.gl-check input { width: 18px; height: 18px; accent-color: #fff; }
+.gl-link { background: none; border: 0; padding: 0; color: #fff; font: inherit; font-weight: 600; text-decoration: underline; cursor: pointer; }
+.gl-btn, .gl-google { position: relative; width: 100%; height: 52px; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; transition: transform .15s var(--ease), background-color .2s var(--ease); }
+.gl-btn { border: 0; background: #fff; color: #0a0a0a; }
+.gl-btn:hover { background: #e9e9ec; }
+.gl-google { display: flex; align-items: center; justify-content: center; gap: 10px; border: 1px solid rgba(255,255,255,.3); background: rgba(255,255,255,.08); color: #fff; font-weight: 600; }
+.gl-google:hover { background: rgba(255,255,255,.16); }
+.gl-btn:active, .gl-google:active { transform: scale(.98); }
+.gl-btn:disabled, .gl-google:disabled { cursor: wait; }
+.gl-btn.loading, .gl-google.loading { color: transparent; pointer-events: none; }
+.gl-google.loading svg { opacity: 0; }
+.gl-btn.loading::after, .gl-google.loading::after { content: ""; position: absolute; inset: 0; margin: auto; width: 20px; height: 20px; border-radius: 50%; border: 2.5px solid #0a0a0a; border-top-color: transparent; animation: spin .7s linear infinite; }
+.gl-google.loading::after { border-color: #fff; border-top-color: transparent; }
+.gl-or { display: flex; align-items: center; gap: 12px; margin: 18px 0; color: rgba(255,255,255,.75); font-size: 13px; }
+.gl-or::before, .gl-or::after { content: ""; flex: 1; height: 1px; background: rgba(255,255,255,.25); }
+.gl-switch { text-align: center; margin: 16px 0 0; font-size: 14px; color: rgba(255,255,255,.85); }
+.gl-switch[hidden] { display: none; }

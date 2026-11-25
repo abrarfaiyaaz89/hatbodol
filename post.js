@@ -149,7 +149,7 @@ async function loadMine() {
 
 onAuthStateChanged(auth, async (user) => {
   currentUser = user; form.hidden = true;
-  if (!user) { gate("Please log in to post a listing.", "auth.html", "Go to login"); return; }
+  if (!user) { gate("Please log in to post a listing.", "login.html?next=post.html", "Go to login"); return; }
   try {
     const s = await getDoc(doc(db, "users", user.uid));
     const st = s.exists() ? s.data().verificationStatus : "unverified";

@@ -32,7 +32,7 @@
         '<button type="submit" aria-label="Search">' + svg('search', 20) + '</button>' +
       '</form>' +
       '<button class="icon-btn" id="theme-toggle" type="button" aria-label="Switch dark mode"><span class="moon">' + svg('moon', 20) + '</span><span class="sun">' + svg('sun', 20) + '</span></button>' +
-      '<a class="btn-login" href="auth.html"' + cur('profile') + '>Login</a>' +
+      '<a class="btn-login" href="login.html"' + cur('profile') + '>Login</a>' +
       '<a class="btn-post" href="post.html">Post</a>' +
       '<div class="um" id="user-menu"></div>' +
     '</div></header>';

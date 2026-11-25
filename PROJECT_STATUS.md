@@ -24,6 +24,9 @@ usermenu.js: 32px avatar button, role=menu panel aligned to the avatar's right e
 Needs: republish firestore.rules; Cloudinary preset for photos. Existing verified accounts sync their public data when they open the account page.
 Known limit: ratings are not tied to a completed deal until Phase 4.
 
+## Login page (built, untested)
+login.html + login.js. Email and password need Email/Password enabled in Firebase (Google works already). auth.html is now only the signed-in account page.
+
 ## Known gaps
 No way to contact a seller yet (messaging is Phase 4). Listing detail page exists (listing.html); no edit page yet; Message seller button is disabled until Phase 4.
 Links to pages that do not exist yet. Search boxes not connected. Privacy & Terms page is a draft; review before inviting real students.

@@ -208,6 +208,6 @@ function rateForm(viewer, mine, meData) {
 
 if (!uid) fail("Profile not found.");
 else onAuthStateChanged(auth, (viewer) => {
-  if (!viewer) { fail("Please log in to view student profiles.", "Go to login", "auth.html"); return; }
+  if (!viewer) { fail("Please log in to view student profiles.", "Go to login", "login.html?next=" + encodeURIComponent("profile.html?uid=" + uid)); return; }
   load(viewer);
 });

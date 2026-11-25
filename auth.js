@@ -1,8 +1,4 @@
-import {
-  onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-  signOut, sendPasswordResetEmail, updateProfile, sendEmailVerification,
-  GoogleAuthProvider, signInWithPopup
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
   doc, getDoc, setDoc, updateDoc, serverTimestamp, writeBatch, collection, query, where, getDocs
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -40,19 +36,6 @@ const ERR = {
 };
 const friendly = (e) => ERR[e && e.code] || "Something went wrong. Please try again.";
 
-// ---- Tabs with sliding highlight
-const panels = { login: $("panel-login"), register: $("panel-register"), reset: $("panel-reset") };
-const tabsBar = document.querySelector(".tabs");
-function tab(name) {
-  clearMsg();
-  Object.keys(panels).forEach((k) => { panels[k].hidden = k !== name; });
-  const hl = name === "register" ? "register" : "login";
-  tabsBar.setAttribute("data-active", hl);
-  document.querySelectorAll("[data-tab]").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.tab === hl)));
-}
-document.querySelectorAll("[data-tab]").forEach((b) => b.addEventListener("click", () => tab(b.dataset.tab)));
-document.querySelectorAll("[data-goto]").forEach((b) => b.addEventListener("click", () => tab(b.dataset.goto)));
-
 async function run(form, fn) {
   const btn = form.querySelector("button[type=submit]");
   btn.disabled = true; btn.classList.add("loading");
@@ -61,46 +44,7 @@ async function run(form, fn) {
   btn.disabled = false; btn.classList.remove("loading");
 }
 
-$("form-login").addEventListener("submit", (ev) => {
-  ev.preventDefault();
-  run(ev.target, async () => {
-    await signInWithEmailAndPassword(auth, $("login-email").value.trim(), $("login-password").value);
-    toast("Welcome back");
-  });
-});
-
-$("form-register").addEventListener("submit", (ev) => {
-  ev.preventDefault();
-  run(ev.target, async () => {
-    const name = $("reg-name").value.trim();
-    const pw = $("reg-password").value;
-    if (name.length < 2) { show("Please enter your full name.", false); return; }
-    if (pw.length < 8) throw { code: "auth/weak-password" };
-    if (pw !== $("reg-password2").value) { show("Passwords do not match.", false); return; }
-    const cred = await createUserWithEmailAndPassword(auth, $("reg-email").value.trim(), pw);
-    await updateProfile(cred.user, { displayName: name });
-    try { await sendEmailVerification(cred.user); } catch (e) { /* non-fatal */ }
-    show("Account created. We sent a verification email to " + cred.user.email + ".", true);
-  });
-});
-
-$("form-reset").addEventListener("submit", (ev) => {
-  ev.preventDefault();
-  run(ev.target, async () => {
-    await sendPasswordResetEmail(auth, $("reset-email").value.trim());
-    show("If an account exists for that email, a reset link has been sent.", true);
-  });
-});
-
-$("btn-google").addEventListener("click", async (ev) => {
-  const btn = ev.currentTarget;
-  btn.disabled = true; btn.classList.add("loading"); clearMsg();
-  try { await signInWithPopup(auth, new GoogleAuthProvider()); toast("Signed in"); }
-  catch (e) { show(friendly(e), false); }
-  btn.disabled = false; btn.classList.remove("loading");
-});
-
-$("btn-logout").addEventListener("click", async () => { await signOut(auth); clearMsg(); toast("Logged out"); });
+$("btn-logout").addEventListener("click", async () => { await signOut(auth); });
 
 // ---- Profile
 const STATUS = {
@@ -343,16 +287,14 @@ $("form-verify").addEventListener("submit", (ev) => {
 // ---- Auth state
 let authReady = false;
 function ready() { authReady = true; $("auth-loading").hidden = true; }
-setTimeout(() => { if (!authReady) { ready(); $("auth-forms").hidden = false; $("hero-guest").hidden = false; } }, 8000);
+const goLogin = () => location.replace("login.html?next=auth.html");
+setTimeout(() => { if (!authReady) goLogin(); }, 10000);
 
 onAuthStateChanged(auth, (user) => {
+  if (!user) { goLogin(); return; }
   ready();
-  const signedIn = !!user;
-  $("auth-forms").hidden = signedIn;
-  $("account").hidden = !signedIn;
-  $("hero-guest").hidden = signedIn;
-  $("hero-user").hidden = !signedIn;
-  if (!signedIn) { $("admin-link").hidden = true; return; }
+  $("account").hidden = false;
+  $("hero-user").hidden = false;
   me.photo = cachedPhoto(user.uid);
   fillIdentity(user, user.displayName);
   loadProfile(user);
